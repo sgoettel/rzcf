@@ -17,7 +17,7 @@ def parse_args():
     date_group = parser.add_mutually_exclusive_group()
     date_group.add_argument('-d', '--date', help='Filter comments from this date (format: YYYY-MM-DD).')
     date_group.add_argument('-dr', '--date_range', nargs=2, help='Filter comments within this date range (format: YYYY-MM-DD YYYY-MM-DD).')
-    parser.add_argument('-c', '--comment_only', help='Only display comment text, without metadata.', action='store_true')
+    parser.add_argument('-c', '--comment_only', help='Only display comment text, not metadata.', action='store_true')
     parser.add_argument('-k', '--keyword', help='Search for a keyword or phrase within the comments.')
     parser.add_argument('-l', '--link', help='Display the link to the comment when used with --comment_only.', action='store_true')
     return parser.parse_args()
@@ -54,6 +54,7 @@ def read_lines_zst(file_name):
 # Parse arguments and filter comments based on the provided criteria.
 def main():
     args = parse_args()
+    found_results = False
     date = None
     date_range_start = None
     date_range_end = None
@@ -100,9 +101,10 @@ def main():
                         if link_id and link_id.startswith('t3_'):
                             comment += f'\nLink: https://www.reddit.com/comments/{link_id[3:]}/'
                 buffered_comments.append(comment)
+                found_results = True
             else:
                 buffered_comments.append(json.dumps(comment_json, ensure_ascii=False))
-            
+                found_results = True
             # Flush buffer when it reaches 100 entries
             if len(buffered_comments) == 100:
                 with open('filtered_comments.json', 'a') as outf:
@@ -116,6 +118,9 @@ def main():
     if buffered_comments:
         with open('filtered_comments.json', 'a') as outf:
             outf.write('\n'.join(buffered_comments))
+
+    if not found_results:
+        print("No results found for the given search parameters.")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

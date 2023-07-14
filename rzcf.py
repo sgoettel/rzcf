@@ -58,19 +58,24 @@ def main():
     date = None
     date_range_start = None
     date_range_end = None
+    comment_count = 0
+
     if args.date:
         date = datetime.datetime.strptime(args.date, '%Y-%m-%d').date()
     if args.date_range:
         date_range_start = datetime.datetime.strptime(args.date_range[0], '%Y-%m-%d').date()
         date_range_end = datetime.datetime.strptime(args.date_range[1], '%Y-%m-%d').date()
+
+    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f'filtered_comments_{timestamp}.json'
     
     buffered_comments = []
     try:
         for line in read_lines_zst(args.file):
             comment_json = JSON_DECODER.raw_decode(line.strip())[0]
 
-            # Ignore comments from 'automoderator' and with body (actual comment) '[deleted]'
-            if comment_json.get('author') == 'automoderator' or comment_json.get('body') == '[deleted]':
+            # Ignore comments from 'automoderator' (in any case) and with body (actual comment) '[deleted]'
+            if comment_json.get('author').lower() == 'automoderator' or comment_json.get('body') == '[deleted]':
                 continue
 
             if args.user and comment_json.get('author') != args.user:
@@ -101,14 +106,16 @@ def main():
                         if link_id and link_id.startswith('t3_'):
                             comment += f'\nLink: https://www.reddit.com/comments/{link_id[3:]}/'
                 buffered_comments.append(comment)
+                comment_count += 1
                 found_results = True
             else:
                 buffered_comments.append(json.dumps(comment_json, ensure_ascii=False))
+                comment_count += 1
                 found_results = True
             # Flush buffer when it reaches 100 entries
-            if len(buffered_comments) == 100:
-                with open('filtered_comments.json', 'a') as outf:
-                    outf.write('\n'.join(buffered_comments))
+            if len(buffered_comments) >= 100:
+                with open(filename, 'a') as outf:
+                    outf.write('\n'.join(buffered_comments) + '\n')
                     buffered_comments = []
     
     except Exception as e:
@@ -116,11 +123,13 @@ def main():
     
     # Write remaining comments in the buffer
     if buffered_comments:
-        with open('filtered_comments.json', 'a') as outf:
-            outf.write('\n'.join(buffered_comments))
+        with open(filename, 'a') as outf:
+            outf.write('\n'.join(buffered_comments) + '\n')
 
     if not found_results:
         print("No results found for the given search parameters.")
+    else:
+        print(f"Finished. Found and saved {comment_count} comments.")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

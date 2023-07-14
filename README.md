@@ -16,7 +16,7 @@ The script works from the command line as follows:
 
 `python3 rzcf.py <filename.zst> [options]` 
 
--   `-u` or `--user`: Filter comments by a specific user, e. g. `-u john_mustermann`  
+-   `-u` or `--user`: Filter comments by a specific user, e. g. `-u john_mustermann` (case-sensitive)
    
 -   `-d` or `--date`: Filter comments from a specific date. The date should be formatted as `YYYY-MM-DD`, e.g. `-d 2020-05-17`
 

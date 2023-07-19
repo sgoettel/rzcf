@@ -1,10 +1,10 @@
 # RZCF
 Back in the day, many of us left 9GAG and ended up sticking with either Reddit or 4chan. For me, it was Reddit. To this day, I'm a big fan. Likewise, I'm a huge fan of corpora for linguistic analysis.
-u/stuck_in_the_matrix and u/Wishful1 (and probably other honorable people) have been taking care of archiving Reddit's universe of submissions and comments for years, you can find them [here](https://academictorrents.com/details/7c0645c94321311bb05bd879ddee4d0eba08aaee) and some general information about the project (and the former API access) [here](https://www.reddit.com/r/pushshift/comments/bcxguf/).
+u/stuck_in_the_matrix and u/Watchful1 (and probably other honorable people) have been taking care of archiving Reddit's universe of submissions and comments for years, you can find them [here](https://academictorrents.com/details/7c0645c94321311bb05bd879ddee4d0eba08aaee) and some general information about the project (and the former API access) [here](https://www.reddit.com/r/pushshift/comments/bcxguf/).
 
 I've merely written a small script that allows you to get a first impression of the data. It was actually just for my own tests and use-cases, but I like to share what I did in Python (might help someone somewhere), so here we go..
 
-RZCF (RedditZstCommentFilter) filters Reddit comments from pushift dumps based on various parameters such as the username, date, or a specific keyword or phrase within the comment. The script works on `.zst` Reddit data dumps. The output is saved to a JSON file named `filtered_comments.json`.
+RZCF (RedditZstCommentFilter) filters Reddit comments from pushift dumps based on various parameters such as the username, date, or a specific keyword or phrase within the comment. The script ignores comments from 'automoderator', as well as comments where the body of the comment is either '[deleted]' or '[removed]', script works on `.zst` Reddit data dumps. The output is saved to a JSON file named `filtered_comments_<timestamp>.json` where `<timestamp>` is the current date and time you run it.
 
 ## How to use
 
@@ -16,7 +16,7 @@ The script works from the command line as follows:
 
 `python3 rzcf.py <filename.zst> [options]` 
 
--   `-u` or `--user`: Filter comments by a specific user, e. g. `-u john_mustermann`  
+-   `-u` or `--user`: Filter comments by a specific user, e. g. `-u john_mustermann` (case-sensitive)
    
 -   `-d` or `--date`: Filter comments from a specific date. The date should be formatted as `YYYY-MM-DD`, e.g. `-d 2020-05-17`
 

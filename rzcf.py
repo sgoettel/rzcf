@@ -74,8 +74,10 @@ def main():
         for line in read_lines_zst(args.file):
             comment_json = JSON_DECODER.raw_decode(line.strip())[0]
 
-            # Ignore comments from 'automoderator' (in any case) and with body (actual comment) '[deleted]'
-            if comment_json.get('author').lower() == 'automoderator' or comment_json.get('body') == '[deleted]':
+            # Ignore comments from 'automoderator' (in any case), with body (actual comment) '[deleted]' or '[removed]'
+            if comment_json.get('author').lower() == 'automoderator' or comment_json.get('body') in ['[deleted]', '[removed]']:
+                continue
+
                 continue
 
             if args.user and comment_json.get('author') != args.user:

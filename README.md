@@ -1,6 +1,6 @@
 # RZCF
 Back in the day, many of us left 9GAG and ended up sticking with either Reddit or 4chan. For me, it was Reddit. To this day, I'm a big fan. Likewise, I'm a huge fan of corpora for linguistic analysis.
-u/stuck_in_the_matrix and u/Wishful1 (and probably other honorable people) have been taking care of archiving Reddit's universe of submissions and comments for years, you can find them [here](https://academictorrents.com/details/7c0645c94321311bb05bd879ddee4d0eba08aaee) and some general information about the project (and the former API access) [here](https://www.reddit.com/r/pushshift/comments/bcxguf/).
+u/stuck_in_the_matrix and u/Watchful1 (and probably other honorable people) have been taking care of archiving Reddit's universe of submissions and comments for years, you can find them [here](https://academictorrents.com/details/7c0645c94321311bb05bd879ddee4d0eba08aaee) and some general information about the project (and the former API access) [here](https://www.reddit.com/r/pushshift/comments/bcxguf/).
 
 I've merely written a small script that allows you to get a first impression of the data. It was actually just for my own tests and use-cases, but I like to share what I did in Python (might help someone somewhere), so here we go..
 

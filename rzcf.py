@@ -3,6 +3,7 @@ import json
 import zstandard
 import datetime
 import logging
+import re
 
 CHUNK_SIZE = 2**27
 MAX_WINDOW_SIZE = (2**29) * 2

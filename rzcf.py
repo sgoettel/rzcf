@@ -80,8 +80,10 @@ def main():
 
                 continue
 
-            if args.user and comment_json.get('author') != args.user:
-                continue
+            if args.user:
+                wildcard_pattern = re.escape(args.user).replace(r"\*", ".*")  # * → .* convert
+                if not re.fullmatch(wildcard_pattern, comment_json.get('author'), re.IGNORECASE):
+                    continue
 
             if args.subreddit and comment_json.get('subreddit') != args.subreddit:
                 continue
